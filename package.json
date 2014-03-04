@@ -1,5 +1,13 @@
 {
+  "scripts": {
+    "dev": "watchify -e entry.js -o static/js/bundle.js -v"
+  },
   "dependencies": {
-    "drop-stl-to-json": "~0.1.2"
+    "drop-stl-to-json": "~0.1.2",
+    "hullworks": "git://github.com/tmpvar/hullworks",
+    "mesh-slice-polygon": "git://github.com/tmpvar/mesh-slice-polygon",
+    "editor3": "tmpvar/editor3",
+    "domready": "~1.0.4"
+
   }
 }

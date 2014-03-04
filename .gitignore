@@ -1,2 +1,3 @@
 node_modules
 vhost.conf
+static/js/bundle.js

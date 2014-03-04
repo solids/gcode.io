@@ -1,8 +1,55 @@
 <html>
 <head>
   <title>gcode.io</title>
+  <style type="text/css">
+    body, html {
+      margin: 0;
+      padding:0;
+      background: #111115;
+    }
+
+    section.page {
+      margin:5%;
+      border: 1px solid #444445;
+      background: #222225;
+      width: 90%;
+      height: 90%;
+    }
+
+    section.page h1 {
+      color: #ddd;
+      font-family: sans-serif;
+      margin: 1%;
+      height: 3%
+    }
+
+    /* stl import */
+    #stl-drop-target {
+      border: 1px dashed #aaa;
+      background: #333335;
+      border-radius: 5px;
+      position:absolute;
+      height: 70%;
+      width: 80%;
+      margin:5%;
+
+    }
+  </style>
 </head>
 <body>
 
+  <section class="page" id="stl">
+    <h1>drop stl</h1>
+    <section id="stl-drop-target">
+
+    </section>
+  </section>
+
+  <section class="page" id="select-bottom">
+    <h1>select the bottom</h1>
+
+  </section>
+
+  <script type="text/javascript" src="js/bundle.js"></script>
 </body>
 </html>
