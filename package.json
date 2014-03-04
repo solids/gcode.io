@@ -1,1 +1,5 @@
-{}
+{
+  "dependencies": {
+    "drop-stl-to-json": "~0.1.2"
+  }
+}
