@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "dev": "watchify -e entry.js -o static/js/bundle.js -v"
+    "dev": "watchify -e entry.js -t workerify -o static/js/bundle.js -v"
   },
   "dependencies": {
     "drop-stl-to-json": "~0.1.2",
@@ -11,5 +11,8 @@
     "modemanager": "~0.1.1",
     "editor3-meshtools": "tmpvar/editor3-meshtools",
     "vec2": "~1.5.0"
+  },
+  "devDependencies": {
+    "workerify": "~0.2.3"
   }
 }

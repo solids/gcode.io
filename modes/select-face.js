@@ -7,15 +7,18 @@ function SelectFaceMode(editor) {
   this.selectedMaterial = new THREE.MeshBasicMaterial({
     color: 0xFF9D40,
     transparent: true,
-    opacity: .7,
+    opacity: 1,
     shading: THREE.FlatShading
   });
 }
 
-SelectFaceMode.prototype.activate = function(event) {
-  editor.container.parentElement.style.display = "block";
-  editor.resize();
-};
+SelectFaceMode.prototype.deactivate = function() {
+  if (this.helper) {
+    this.helper.visible = false;
+    this.helper.selected = false;
+    this.helper.material = this.helper.originalMaterial;
+  }
+}
 
 SelectFaceMode.prototype.mousedown = function(event) {
 
