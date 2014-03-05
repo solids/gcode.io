@@ -14,7 +14,7 @@ HelperMode.prototype.mousemove = function(event) {
     new THREE.Vector2(event.offsetX, event.offsetY)
   );
 
-  if (this.helper) {
+  if (this.helper && !this.helper.selected) {
     this.helper.visible = false;
   }
 

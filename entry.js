@@ -1,9 +1,9 @@
 var Editor3 = require('editor3');
 var ModeManager = require('modemanager');
 var OrbitControls = require('./lib/orbitcontrols')
-var HelperMode = require('./modes/helper')
+var HelperMode = require('./modes/helper');
+var SelectFaceMode = require('./modes/select-face');
 var tools = require('editor3-meshtools');
-
 
 require('domready')(function() {
 
@@ -20,6 +20,11 @@ require('domready')(function() {
     'navigation',
     new OrbitControls(editor.scene, editor.camera),
     true
+  );
+
+  editor.modeManager.add(
+    'select-bottom',
+    new SelectFaceMode(editor.scene, editor.camera)
   );
 
   // TODO: move this into a mode
@@ -45,7 +50,7 @@ require('domready')(function() {
       mesh.material.opacity = .2;
 
       rootModeManager.mode('editor3');
-
+      editor.modeManager.mode('select-bottom');
       // TODO: zoom to fit the mesh!
       //editor.focusOn(mesh);
 
