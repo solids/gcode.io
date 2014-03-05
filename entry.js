@@ -1,6 +1,8 @@
 var Editor3 = require('editor3');
 var ModeManager = require('modemanager');
 var OrbitControls = require('./lib/orbitcontrols')
+var HelperMode = require('./modes/helper')
+var tools = require('editor3-meshtools');
 
 
 require('domready')(function() {
@@ -9,6 +11,7 @@ require('domready')(function() {
 
   var editor = window.editor =  new Editor3('#select-bottom .context');
   editor.updateSteps.push(rootModeManager.update.bind(rootModeManager));
+
 
   rootModeManager.add('editor3', editor.modeManager);
 
@@ -35,6 +38,9 @@ require('domready')(function() {
 
     stl.once('end', function() {
       mesh.finalize();
+
+      tools.computeNgonHelpers(mesh);
+
       editor.addMesh(mesh);
       mesh.material.opacity = .2;
 
