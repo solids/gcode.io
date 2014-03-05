@@ -7,14 +7,15 @@ require('domready')(function() {
 
   var rootModeManager = new ModeManager(true);
 
-
   var editor = window.editor =  new Editor3('#select-bottom .context');
+  editor.updateSteps.push(rootModeManager.update.bind(rootModeManager));
 
   rootModeManager.add('editor3', editor.modeManager);
 
+  // Setup editor3 controls
   editor.modeManager.add(
     'navigation',
-    new OrbitControls(editor.scene, window),
+    new OrbitControls(editor.scene, editor.camera),
     true
   );
 
