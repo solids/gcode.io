@@ -1,13 +1,29 @@
 var Editor3 = require('editor3');
+var ModeManager = require('modemanager');
+var OrbitControls = require('./lib/orbitcontrols')
+
 
 require('domready')(function() {
+
+  var rootModeManager = new ModeManager(true);
+
+
+  var editor = window.editor =  new Editor3('#select-bottom .context');
+
+  rootModeManager.add('editor3', editor.modeManager);
+
+  editor.modeManager.add(
+    'navigation',
+    new OrbitControls(editor.scene, window),
+    true
+  );
 
   // TODO: move this into a mode
   var dropTarget = document.getElementById('stl-drop-target');
 
   var dropper = require('drop-stl-to-json')(dropTarget);
   dropper.once('stream', function(stl) {
-    var editor = window.editor =  new Editor3('#stl-drop-target');
+
     var mesh = window.mesh = editor.createMesh();
 
     stl.once('data', function() {
@@ -19,11 +35,9 @@ require('domready')(function() {
     stl.once('end', function() {
       mesh.finalize();
       editor.addMesh(mesh);
+      mesh.material.opacity = .2;
 
-      requestAnimationFrame(function tick() {
-        editor.render();
-        requestAnimationFrame(tick);
-      });
+      rootModeManager.mode('editor3');
 
       // TODO: zoom to fit the mesh!
       //editor.focusOn(mesh);
@@ -31,3 +45,4 @@ require('domready')(function() {
     });
   });
 });
+

@@ -13,7 +13,8 @@
       border: 1px solid #444445;
       background: #222225;
       width: 90%;
-      height: 90%;
+      height: 85%;
+      border-radius: 2
     }
 
     section.page h1 {
@@ -27,12 +28,16 @@
     #stl-drop-target {
       border: 1px dashed #aaa;
       background: #333335;
-      border-radius: 5px;
-      position:absolute;
-      height: 70%;
-      width: 80%;
+      border-radius: 2px;
+      position:relative;
+      height: 75%;
+      width: 90%;
       margin:5%;
+    }
 
+    #select-bottom .context {
+      margin-top: 3%;
+      height: 90%;
     }
   </style>
 </head>
@@ -40,14 +45,14 @@
 
   <section class="page" id="stl">
     <h1>drop stl</h1>
-    <section id="stl-drop-target">
-
-    </section>
+    <section id="stl-drop-target"></section>
   </section>
 
   <section class="page" id="select-bottom">
     <h1>select the bottom</h1>
+    <section class="context">
 
+    </section>
   </section>
 
   <script type="text/javascript" src="js/bundle.js"></script>
