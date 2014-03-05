@@ -1,9 +1,9 @@
 var tools = require('editor3-meshtools');
 
-function SelectFaceMode(scene, camera) {
+function SelectFaceMode(editor) {
   this.helper = null;
-  this.scene = scene;
-  this.camera = camera;
+  this.editor = editor;
+
   this.selectedMaterial = new THREE.MeshBasicMaterial({
     color: 0xFF9D40,
     transparent: true,
@@ -12,11 +12,16 @@ function SelectFaceMode(scene, camera) {
   });
 }
 
+SelectFaceMode.prototype.activate = function(event) {
+  editor.container.parentElement.style.display = "block";
+  editor.resize();
+};
+
 SelectFaceMode.prototype.mousedown = function(event) {
 
   var isect = tools.mouseNgonHelperIntersection(
-    this.scene,
-    this.camera,
+    this.editor.scene,
+    this.editor.camera,
     new THREE.Vector2(event.offsetX, event.offsetY)
   );
 
@@ -37,6 +42,13 @@ SelectFaceMode.prototype.mousedown = function(event) {
     }
   }
 };
+
+
+SelectFaceMode.prototype.keydown = function(event) {
+  if (event.keyCode === 13) {
+    this.exit && this.exit(this.helper)
+  }
+}
 
 SelectFaceMode.prototype.handle = function(type, event) {
   if (typeof this[type] === 'function') {

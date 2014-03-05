@@ -3,6 +3,7 @@ var ModeManager = require('modemanager');
 var OrbitControls = require('./lib/orbitcontrols')
 var HelperMode = require('./modes/helper');
 var SelectFaceMode = require('./modes/select-face');
+var UploadMode = require('./modes/upload');
 var tools = require('editor3-meshtools');
 
 require('domready')(function() {
@@ -12,8 +13,9 @@ require('domready')(function() {
   var editor = window.editor =  new Editor3('#select-bottom .context');
   editor.updateSteps.push(rootModeManager.update.bind(rootModeManager));
 
-
   rootModeManager.add('editor3', editor.modeManager);
+
+  var uploadMode = new UploadMode(rootModeManager, document.getElementById('stl-drop-target'))
 
   // Setup editor3 controls
   editor.modeManager.add(
@@ -22,39 +24,19 @@ require('domready')(function() {
     true
   );
 
-  editor.modeManager.add(
-    'select-bottom',
-    new SelectFaceMode(editor.scene, editor.camera)
-  );
+  editor.modeManager.add('select-bottom', new SelectFaceMode(editor));
 
-  // TODO: move this into a mode
-  var dropTarget = document.getElementById('stl-drop-target');
+  editor.modeManager.modes['select-bottom'].exit = function(ngonHelper) {
+    // TODO: store the ngon helper dimensions
+    console.log('TODO: reorient the object and move to stock')
+  };
 
-  var dropper = require('drop-stl-to-json')(dropTarget);
-  dropper.once('stream', function(stl) {
+  uploadMode.exit = function() {
+    rootModeManager.mode('editor3');
+    editor.modeManager.mode('select-bottom');
+  };
 
-    var mesh = window.mesh = editor.createMesh();
-
-    stl.once('data', function() {
-      stl.on('data', function(obj) {
-        mesh.addFace(obj.verts, obj.normal);
-      });
-    });
-
-    stl.once('end', function() {
-      mesh.finalize();
-
-      tools.computeNgonHelpers(mesh);
-
-      editor.addMesh(mesh);
-      mesh.material.opacity = .2;
-
-      rootModeManager.mode('editor3');
-      editor.modeManager.mode('select-bottom');
-      // TODO: zoom to fit the mesh!
-      //editor.focusOn(mesh);
-
-    });
-  });
+  rootModeManager.add('upload', uploadMode);
+  rootModeManager.mode('upload', editor);
 });
 
