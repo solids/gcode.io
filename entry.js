@@ -29,19 +29,25 @@ require('domready')(function() {
   editor.modeManager.add('toolpath', new ToolpathMode(editor));
   editor.modeManager.add('select-bottom', new SelectFaceMode(editor));
 
-  editor.modeManager.modes['select-bottom'].exit = function(ngonHelper) {
-    // TODO: store the ngon helper dimensions
-    //console.log('TODO: reorient the object and move to stock')
-    editor.modeManager.mode('toolpath', ngonHelper)
-  };
 
-  uploadMode.exit = function() {
+  var mesh = null;
+  uploadMode.exit = function(uploadedMesh) {
+    mesh = uploadedMesh;
+
     editor.parentElement.style.display = "block";
     editor.resize();
 
     rootModeManager.mode('editor3');
     editor.modeManager.mode('select-bottom');
   };
+
+
+  editor.modeManager.modes['select-bottom'].exit = function(ngonHelper) {
+    // TODO: store the ngon helper dimensions
+    //console.log('TODO: reorient the object and move to stock')
+    editor.modeManager.mode('toolpath', mesh)
+  };
+
 
   rootModeManager.add('upload', uploadMode);
   rootModeManager.mode('upload', editor);

@@ -10,7 +10,8 @@
     "domready": "~1.0.4",
     "modemanager": "~0.1.1",
     "editor3-meshtools": "tmpvar/editor3-meshtools",
-    "vec2": "~1.5.0"
+    "vec2": "~1.5.0",
+    "workerstream": "~1.2.0"
   },
   "devDependencies": {
     "workerify": "~0.2.3"
