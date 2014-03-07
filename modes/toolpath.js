@@ -50,35 +50,36 @@ ToolpathMode.prototype.activate = function(last, mesh) {
 
       for (var i=0; i<hulls.length; i++) {
         var hullArray = hulls[i];
-        if (hullArray) {
+        if (hullArray && hullArray.length) {
           for (var j = 0; j<hullArray.length; j++) {
             var r = hullArray[j];
+            if (r.length) {
+              var lineGeometry = new THREE.Geometry();
+              for (var k = 0; k < r.length; k++) {
 
-            var lineGeometry = new THREE.Geometry();
-            for (var k = 0; k < r.length; k++) {
+                lineGeometry.vertices.push(
+                  new THREE.Vector3(
+                    r[k].X/modelScale,
+                    r[k].Y/modelScale,
+                    z/modelScale
+                  )
+                );
+              }
 
               lineGeometry.vertices.push(
                 new THREE.Vector3(
-                  r[k].X/modelScale,
-                  r[k].Y/modelScale,
+                  r[0].X/modelScale,
+                  r[0].Y/modelScale,
                   z/modelScale
                 )
               );
+
+              editor.scene.add(new THREE.Line(
+                lineGeometry,
+                lineMaterial,
+                THREE.LineStrip
+              ));
             }
-
-            lineGeometry.vertices.push(
-              new THREE.Vector3(
-                r[0].X/modelScale,
-                r[0].Y/modelScale,
-                z/modelScale
-              )
-            );
-
-            editor.scene.add(new THREE.Line(
-              lineGeometry,
-              lineMaterial,
-              THREE.LineStrip
-            ));
           }
         }
       }
