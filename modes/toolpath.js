@@ -104,6 +104,9 @@ ToolpathMode.prototype.activate = function(last, mesh) {
   });
 
   var verts = geometry.vertices;
+  var mx = mesh.position.x;
+  var my = mesh.position.y;
+  var mz = mesh.position.z;
   for (var i=0; i<geometry.faces.length; i++) {
     var face = geometry.faces[i];
 
@@ -111,9 +114,9 @@ ToolpathMode.prototype.activate = function(last, mesh) {
     this.worker.write({
       name : 'face',
       data: [
-        [verts[face.a].x*modelScale, verts[face.a].y*modelScale, verts[face.a].z*modelScale],
-        [verts[face.b].x*modelScale, verts[face.b].y*modelScale, verts[face.b].z*modelScale],
-        [verts[face.c].x*modelScale, verts[face.c].y*modelScale, verts[face.c].z*modelScale]
+        [(mx + verts[face.a].x) * modelScale, (my + verts[face.a].y) * modelScale, (mz + verts[face.a].z) * modelScale],
+        [(mx + verts[face.b].x) * modelScale, (my + verts[face.b].y) * modelScale, (mz + verts[face.b].z) * modelScale],
+        [(mx + verts[face.c].x) * modelScale, (my + verts[face.c].y) * modelScale, (mz + verts[face.c].z) * modelScale]
       ]
     });
   }

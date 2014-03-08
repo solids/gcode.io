@@ -5,7 +5,7 @@ var HelperMode = require('./modes/helper');
 var SelectFaceMode = require('./modes/select-face');
 var UploadMode = require('./modes/upload');
 var ToolpathMode = require('./modes/toolpath');
-var tools = require('editor3-meshtools');
+var tools = window.tools = require('editor3-meshtools');
 
 require('domready')(function() {
 
@@ -13,7 +13,8 @@ require('domready')(function() {
 
   var editor = window.editor =  new Editor3('#editor3 .context', '#editor3');
   editor.updateSteps.push(rootModeManager.update.bind(rootModeManager));
-
+  var axes = new THREE.AxisHelper(10);
+  editor.scene.add(axes)
   rootModeManager.add('editor3', editor.modeManager);
 
   var uploadMode = new UploadMode(rootModeManager, document.getElementById('stl-drop-target'))
@@ -38,7 +39,7 @@ require('domready')(function() {
     editor.resize();
 
     rootModeManager.mode('editor3');
-    editor.modeManager.mode('select-bottom');
+    editor.modeManager.mode('select-bottom', uploadedMesh);
   };
 
 
