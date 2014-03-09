@@ -8,13 +8,34 @@ function ToolpathMode(editor) {
 
   window.worker=  this.worker;
   this.layers = [];
-  this.gcode = [];
+
 }
 
 ToolpathMode.prototype.deactivate = function(last) {
+  Array.prototype.push.apply(this.gcode, [
+    'G1 Z' + Math.abs(this.startZ || 5),
+    'G4 P2',
+    'M5',
+    '$H',
+    'G10 L20 P1 X0 Y0 Z0',
+    'G1 X5 Y5 Z-5'
+  ]);
 };
 
 ToolpathMode.prototype.activate = function(last, mesh) {
+  this.gcode = [
+    '$H',
+    'M4 S' + 7000,
+    'G4 P5',
+    'G10 L20 P1 X0 Y0 Z0',
+    'G21G17',
+    'G1 X' + (this.startX || 10) + ' Y' + (this.startY || 10) + ' F4000',
+    'G1 Z' + (this.startZ || -5),
+    'G10 L20 P1 X0 Y0 Z0',
+    'G28.1 X0 Y0 Z0',
+    'G1 Z5'
+  ];
+
   var h1 = this.editor.parentElement.querySelector('h1');
   h1.innerHTML = "let's generate toolpaths";
   this.mesh = mesh;
@@ -38,7 +59,7 @@ ToolpathMode.prototype.activate = function(last, mesh) {
 
 
   var gcode = function(op, obj) {
-    return op + Object.keys(obj).map(function(n) {
+    return op + ' ' +  Object.keys(obj).map(function(n) {
       if (n !== 'x' && n !== 'y' && n !== 'z' && n !== 'f') {
         return;
       }
@@ -52,17 +73,13 @@ ToolpathMode.prototype.activate = function(last, mesh) {
   console.log('TOP Z', boundZ);
 
   this.worker.on('data', function(data) {
-
-
     if (data.name === 'layer') {
 
       if (!data.data.hulls) {
         return;
       }
 
-
       var layer = [];
-
 
       var z = data.data.z/modelScale;
       var hulls = data.data.hulls, l = hulls.length, lastGeometry;
@@ -98,9 +115,7 @@ ToolpathMode.prototype.activate = function(last, mesh) {
 
               mode.gcode.push(gcode('G1', v));
 
-              if (k === 0) {
-                mode.gcode.push(gcode('G1', { z : 5 }));
-              }
+              mode.gcode.push(gcode('G1', { z : 1 }));
 
               lineGeometry.vertices.push(
                 new THREE.Vector3(
@@ -120,7 +135,7 @@ ToolpathMode.prototype.activate = function(last, mesh) {
         }
       }
 
-      mode.gcode.push(gcode('G1', { z : 5 }));
+      mode.gcode.push(gcode('G1', { z : 1 }));
 
     } else if (data.name === 'grind') {
       console.log('elapsed', (Date.now() - start) + 'ms');
@@ -161,14 +176,9 @@ ToolpathMode.prototype.activate = function(last, mesh) {
   this.worker.write({ name : 'grind' });
 };
 
-ToolpathMode.prototype.mousedown = function(event) {
-
-};
-
-
 ToolpathMode.prototype.keydown = function(event) {
   if (event.keyCode === 13) {
-    this.exit && this.exit(this.helper);
+    this.exit && this.exit(this.gcode, this.mesh);
   }
 }
 
