@@ -12,9 +12,12 @@
     "editor3-meshtools": "tmpvar/editor3-meshtools",
     "vec2": "~1.5.0",
     "workerstream": "~1.2.0",
-    "skateboard": "~0.2.6"
+    "skateboard": "~0.2.6",
+    "through2": "^0.4.1"
   },
   "devDependencies": {
-    "workerify": "~0.2.3"
+    "workerify": "^0.3.0",
+    "beefy": "^1.1.0",
+    "watchify": "^0.6.4"
   }
 }
