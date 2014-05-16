@@ -18,6 +18,22 @@ UploadMode.prototype.handleUploadStream = function(stream) {
   });
 
   stream.once('end', function() {
+    mesh.geometry.computeBoundingBox();
+
+    // center the mesh on origin
+    var bb = mesh.geometry.boundingBox;
+    var move = bb.max.sub(bb.min).divideScalar(2).add(bb.min);
+    console.log(move);
+    var verts = mesh.geometry.vertices;
+    for (var i = 0; i<verts.length; i++) {
+      var v = verts[i]
+      v.set(
+        v.x - move.x,
+        v.y - move.y,
+        v.z - move.z
+      );
+    }
+
     mesh.finalize();
 
     // TODO: compute this over the next X seconds, possibly in a webworker
