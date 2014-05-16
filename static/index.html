@@ -6,6 +6,7 @@
       margin: 0;
       padding:0;
       background: #111115;
+      overflow: hidden;
     }
 
     section.page {
@@ -59,7 +60,16 @@
   </section>
 
   <section class="page" id="editor3">
-    <h1>press enter to generate a toolpath</h1>
+    <!-- <a href="#back" class="back">&lt;</a> -->
+    <h1>toolpath</h1>
+
+    <section class="dialog">
+      <p>
+        <label>tool diameter</label>
+        <input type="text" value="2.5" name="tool-diameter" />
+      </p>
+    </section>
+
     <section class="context"></section>
   </section>
 
