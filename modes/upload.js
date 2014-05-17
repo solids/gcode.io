@@ -14,7 +14,9 @@ UploadMode.prototype.handleUploadStream = function(stream) {
   var mode = this;
 
   stream.on('data', function(obj) {
-    mesh.addFace(obj.verts, obj.normal);
+    if (obj && obj.verts) {
+      mesh.addFace(obj.verts, obj.normal);
+    }
   });
 
   stream.once('end', function() {
