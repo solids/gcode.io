@@ -7,6 +7,7 @@
       padding:0;
       background: #111115;
       overflow: hidden;
+      font-family: Helvetica, arial, sans-serif;
     }
 
     section.page {
@@ -28,6 +29,55 @@
       letter-spacing: .05em;
     }
 
+    section.dialog {
+      border: 1px solid #444;
+      border-radius: 3px;
+      background: #222;
+      position:absolute;
+      margin:1% 0;
+      top:0;
+      right: 1%;
+      padding:.5em;
+      bottom: 0;
+      width: 15%;
+      min-width: 275px;
+      font-size: 1.25em;
+      line-height: 1.5em;
+      text-align: right;
+    }
+
+      section.dialog label {
+        width: 200px;
+        display:inline-block;
+        color: #777;
+        text-align: left
+      }
+
+      section.dialog input:focus {
+        outline: none;
+        color: orange;
+        border-color: orange;
+      }
+
+      section.dialog input::-webkit-selection {
+        background-color:#f0f;
+      }
+
+      section.dialog input {
+        border: 1px solid #333;
+        border-radius: 3px;
+        padding: .1em;
+        background:#222;
+        font-size: 1em;
+        width: 3em;
+        color: #888;
+      }
+
+      section.dialog p {
+        margin:0;
+      }
+
+
     /* stl import */
     #stl-drop-target {
       border: 1px dashed #aaa;
@@ -42,6 +92,10 @@
     #editor3 .context {
       margin-top: 3%;
       height: 89%;
+    }
+
+    #editor3 {
+      width: 70%;
     }
   </style>
 
@@ -65,12 +119,16 @@
 
     <section class="dialog">
       <p>
-        <label>tool diameter</label>
+        <label>tool diameter (mm)</label>
         <input type="text" value="2.5" name="tool-diameter" />
       </p>
       <p>
-        <label>depth per pass</label>
+        <label>depth per pass (mm)</label>
         <input type="text" value="1" name="depth-per-pass" />
+      </p>
+      <p>
+        <label>scale</label>
+        <input type="text" value="1" name="scale" />
       </p>
     </section>
 
