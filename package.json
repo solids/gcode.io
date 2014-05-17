@@ -3,7 +3,7 @@
     "dev": "watchify -e entry.js -t workerify -o static/js/bundle.js -v"
   },
   "dependencies": {
-    "drop-stl-to-json": "^0.1.3",
+    "drop-stl-to-json": "^0.1.4",
     "hullworks": "git://github.com/tmpvar/hullworks",
     "mesh-slice-polygon": "git://github.com/tmpvar/mesh-slice-polygon",
     "editor3": "tmpvar/editor3",
