@@ -19,8 +19,7 @@ SelectFaceMode.prototype.activate = function(last, mesh) {
 
   this.bounds = this.editor.createMesh();
 
-  mesh.position.set(0, 0, (bb[1][2] - bb[0][2])/2);
-
+  // mesh.position.set(0, 0, (bb[1][2] - bb[0][2])/2);
   this.bounds.geometry = new THREE.BoxGeometry(
     bb[1][0] - bb[0][0],
     bb[1][1] - bb[0][1],
@@ -57,6 +56,9 @@ SelectFaceMode.prototype.deactivate = function() {
     // TODO: orient the face
     // this.helper.parent.restOnOrigin();
   }
+   // else {
+    this.mesh.restOnOrigin();
+  // }
 }
 
 SelectFaceMode.prototype.mousedown = function(event) {
