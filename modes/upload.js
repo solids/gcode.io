@@ -78,7 +78,6 @@ UploadMode.prototype.deactivate = function(event) {
 };
 
 UploadMode.prototype.handle = function(type, event) {
-  console.log(type, event);
   if (typeof this[type] === 'function') {
     return this[type](event);
   }
