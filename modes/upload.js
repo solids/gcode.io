@@ -18,19 +18,24 @@ UploadMode.prototype.handleUploadStream = function(stream) {
   });
 
   stream.once('end', function() {
-    mesh.geometry.computeBoundingBox();
 
     // center the mesh on origin
-    var bb = mesh.geometry.boundingBox;
-    var move = bb.max.sub(bb.min).divideScalar(2).add(bb.min);
-    console.log(move);
+    var bb = mesh.boundingBox();
+
+
+    var move = [
+      (bb[1][0] - bb[0][0]) / 2 + bb[0][0],
+      (bb[1][1] - bb[0][1]) / 2 + bb[0][1],
+      (bb[1][1] - bb[0][1]) / 2 + bb[0][2],
+    ];
+
     var verts = mesh.geometry.vertices;
     for (var i = 0; i<verts.length; i++) {
       var v = verts[i]
       v.set(
-        v.x - move.x,
-        v.y - move.y,
-        v.z - move.z
+        v.x - move[0],
+        v.y - move[1],
+        v.z - move[2]
       );
     }
 

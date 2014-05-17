@@ -14,10 +14,14 @@ function SelectFaceMode(editor) {
 
 SelectFaceMode.prototype.activate = function(last, mesh) {
   this.mesh = mesh;
+
   var bb = mesh.boundingBox();
+
   this.bounds = this.editor.createMesh();
 
-  this.bounds.geometry =  new THREE.BoxGeometry(
+  mesh.position.set(0, 0, (bb[1][2] - bb[0][2])/2);
+
+  this.bounds.geometry = new THREE.BoxGeometry(
     bb[1][0] - bb[0][0],
     bb[1][1] - bb[0][1],
     bb[1][2] - bb[0][2],
@@ -27,7 +31,7 @@ SelectFaceMode.prototype.activate = function(last, mesh) {
   var egh = new THREE.EdgesHelper(this.bounds, 0x0086FF );
   egh.material.linewidth = 2;
   egh.material.side = THREE.DoubleSide;
-  this.editor.scene.add(egh);
+  mesh.add(egh);
 };
 
 SelectFaceMode.prototype.deactivate = function() {
@@ -51,10 +55,7 @@ SelectFaceMode.prototype.deactivate = function() {
     // }
 
     // TODO: orient the face
-    this.helper.parent.restOnOrigin();
-  } else {
-    this.mesh.restOnOrigin();
-
+    // this.helper.parent.restOnOrigin();
   }
 }
 
