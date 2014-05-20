@@ -94,6 +94,15 @@ function ToolpathMode(editor) {
 
     } else if (data.name === 'grind') {
       console.log('elapsed', (Date.now() - mode.grindStart) + 'ms');
+
+      Array.prototype.push.apply(mode.gcode, [
+        'G1 Z' + Math.abs(mode.startZ || 5),
+        'G4 P2',
+        'M5',
+        '$H',
+        'G10 L20 P1 X0 Y0 Z0',
+        'G1 X5 Y5 Z-5'
+      ]);
     }
   });
 
