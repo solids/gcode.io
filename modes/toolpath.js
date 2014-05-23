@@ -124,25 +124,23 @@ function ToolpathMode(editor) {
 
     throttleTimer = setTimeout(mode.generate.bind(mode), 200);
   };
-
   setTimeout(function() {
-    mode.form.depthPerPass.change(handlePropertyChange.bind(null, 'depthPerPass'));
-    mode.form.scale.change(handlePropertyChange.bind(null, 'scale'));
-    mode.form.toolDiameter.change(handlePropertyChange.bind(null, 'toolDiameter'));
+    var keys = Object.keys(mode.form);
+    for (var i = 0; i<keys.length; i++) {
+      var k = keys[i];
+      var prop = mode.form[k];
+
+      if (typeof prop === 'function') {
+        mode.form[k].change(handlePropertyChange.bind(null, k));
+      }
+    }
   }, 200);
 }
 
-ToolpathMode.prototype.modelScale = 1000;
+ToolpathMode.prototype.modelScale = 1;
 
 ToolpathMode.prototype.deactivate = function(last) {
-  Array.prototype.push.apply(this.gcode, [
-    'G1 Z' + Math.abs(this.startZ || 5),
-    'G4 P2',
-    'M5',
-    '$H',
-    'G10 L20 P1 X0 Y0 Z0',
-    'G1 X5 Y5 Z-5'
-  ]);
+  this.editor.parentElement.querySelector('#toolpath-dialog').style.display = 'none';
 };
 
 ToolpathMode.prototype.activate = function(last, mesh) {
@@ -150,6 +148,10 @@ ToolpathMode.prototype.activate = function(last, mesh) {
   var h1 = this.editor.parentElement.querySelector('h1');
   h1.innerHTML = "let's generate toolpaths";
   this.mesh = mesh;
+
+  this.editor.parentElement.querySelector('#toolpath-dialog').style.display = 'block';
+
+
   var modelScale = this.modelScale;
 
   var geometry = mesh.geometry;
@@ -214,7 +216,7 @@ ToolpathMode.prototype.generate = function() {
     data : {
       toolDiameter: this.form.toolDiameter()*modelScale,
       stockTop: (posZ + (bb[1][2] - bb[0][2])/2)*modelScale,
-      stockBottom: (posZ + bb[0][2])*modelScale,
+      stockBottom: this.form.stockBottom() * modelScale,//(posZ + bb[0][2])*modelScale,
       depthPerPass: modelScale*this.form.depthPerPass()
     }
   });
