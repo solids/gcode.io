@@ -137,7 +137,7 @@ function ToolpathMode(editor) {
   }, 200);
 }
 
-ToolpathMode.prototype.modelScale = 1;
+ToolpathMode.prototype.modelScale = 1000;
 
 ToolpathMode.prototype.deactivate = function(last) {
   this.editor.parentElement.querySelector('#toolpath-dialog').style.display = 'none';
