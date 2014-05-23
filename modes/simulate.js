@@ -7,11 +7,6 @@ function SimulateMode(editor) {
 SimulateMode.prototype.activate = function(last, options) {
   this.gcode = options.gcode;
   this.mesh = options.mesh;
-
-//  this.skateboard = skateboard('ws://localhost:7008');
-
-
-
 };
 
 SimulateMode.prototype.mousedown = function(event) {

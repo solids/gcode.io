@@ -9,7 +9,7 @@ var SendToGrblMode = require('./modes/send-to-grbl');
 var SimulateMode = require('./modes/send-to-grbl');
 var tools = window.tools = require('editor3-meshtools');
 
-window.skateboard = require('skateboard');
+var skateboard = require('skateboard');
 
 require('domready')(function() {
 
@@ -58,6 +58,12 @@ require('domready')(function() {
 
   editor.modeManager.modes.toolpath.exit = function(gcode, mesh) {
     editor.modeManager.mode('simulate', { mesh: mesh, gcode: gcode });
+    console.log(gcode.join('\n'));
+    skateboard(function(stream) {
+      gcode.forEach(function(line) {
+        stream.write(line + '\r\n');
+      });
+    });
   };
 
   editor.modeManager.modes.simulate.exit = function(gcode) {

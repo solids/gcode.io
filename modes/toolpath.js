@@ -15,7 +15,18 @@ function ToolpathMode(editor) {
         return;
       }
 
-      return n.toUpperCase() + Number(obj[n]).toFixed(3);
+      var val = Number(obj[n]).toFixed(3);
+      if (nl === 'x') {
+        val -= mode.bb[0][0];
+        val += mode.form.toolDiameter()/2;
+      }
+
+      if (nl === 'y') {
+        val -= mode.bb[0][1];
+        val += mode.form.toolDiameter()/2;
+      }
+
+      return n.toUpperCase() + val;
     }).filter(Boolean).join(' ');
   };
 
@@ -103,6 +114,8 @@ function ToolpathMode(editor) {
         'G10 L20 P1 X0 Y0 Z0',
         'G1 X5 Y5 Z-5'
       ]);
+
+      console.log(mode.gcode.join('\n'));
     }
   });
 
@@ -196,7 +209,7 @@ ToolpathMode.prototype.generate = function() {
     'G10 L20 P1 X0 Y0 Z0',
     'G21G17',
     'G1 X' + (this.startX || 10) + ' Y' + (this.startY || 10) + ' F4000',
-    'G1 Z' + (this.startZ || -5),
+    'G1 Z' + this.startZ,
     'G10 L20 P1 X0 Y0 Z0',
     'G28.1 X0 Y0 Z0',
     'G1 Z5'
@@ -206,7 +219,7 @@ ToolpathMode.prototype.generate = function() {
   var mode = this;
   var modelScale = this.modelScale;
 
-  var bb = mesh.boundingBox({ x: 0, y: 0, z: 0});
+  var bb = this.bb = mesh.boundingBox({ x: 0, y: 0, z: 0});
 
   this.boundZ = bb[1][2] - bb[0][2];
   var posZ = mesh.position.z;
